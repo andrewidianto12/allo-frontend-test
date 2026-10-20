@@ -1,0 +1,30 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    {
+      "severity": "non-blocking",
+      "confidence": "likely",
+      "label": "Generated route types not tracked",
+      "detail": "tsconfig.app.json now includes typed-router.d.ts and src/pages/rockets/[id].vue relies on it for route.params.id: string, but typed-router.d.ts (plus components.d.ts and package-lock.json) is untracked. `build` runs vue-tsc in parallel with the vite build that regenerates it, so a fresh clone may fail type-check. Commit the generated files with the change."
+    },
+    {
+      "severity": "non-blocking",
+      "confidence": "confirmed",
+      "label": "Retry offered for permanent 'not found'",
+      "detail": "ErrorState always shows Retry. For a reloaded local-* id (src/stores/rockets.ts 86-90) or an API 404, retrying just reproduces 'Rocket not found'. Hide Retry or offer 'Back to list' in that case."
+    },
+    {
+      "severity": "non-blocking",
+      "confidence": "possible-to-likely",
+      "label": "Shared detailLoading across ids",
+      "detail": "Navigating quickly between two uncached detail ids lets the first request's finally clear detailLoading (and possibly set detailError) while the second is still in flight, so the page briefly renders nothing. Track the in-flight id or use a request token."
+    },
+    {
+      "severity": "non-blocking",
+      "confidence": "confirmed",
+      "label": "Local rockets hidden during list retry",
+      "detail": "In src/pages/index.vue the LoadingState branch (loading && !loaded) wins over hasRockets, so user-added rockets vanish while a retry runs after a failed initial load. Render the list whenever local rockets exist."
+    }
+  ],
+  "reviewDoc": "/Users/andrew/ayomaju/test/allobank/allo-frontend-test/.agents/tasks/review.md"
+}
